@@ -19,5 +19,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         context = new Context(primaryStage);
         context.switchScene(new MainScreen(context));
+
     }
 }

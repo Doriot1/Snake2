@@ -9,7 +9,6 @@ public class Snake{
     private boolean isAlive = true;
     private int xPosition = 360;
     private int yPosition = 360;
-
     public final static int UP = 0, DOWN = 2, EAST = 1, WEST = 3;
     private int direction = 1;
 
@@ -37,11 +36,11 @@ public class Snake{
 
         if(direction == 0)
             yPosition -= 4;
-        if(direction == 1)
+        else if(direction == 1)
             xPosition += 4;
-        if (direction == 2)
+        else if (direction == 2)
             yPosition += 4;
-        if (direction == 3)
+        else if (direction == 3)
             xPosition -= 4;
     }
 

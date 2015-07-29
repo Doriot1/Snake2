@@ -1,5 +1,6 @@
 package view;
 
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -8,6 +9,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import model.Context;
 import model.Snake;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Daniel on 18.7.2015.
@@ -19,7 +23,7 @@ public class MainScreen extends GridPane {
     private GraphicsContext gc;
     private Snake snake;
     private Button button;
-
+    private Timer timer = new Timer();
 
 
     public MainScreen(Context context) {
@@ -31,6 +35,8 @@ public class MainScreen extends GridPane {
         gc.fillRect(0, 0, 4000, 4000);
         add(canvas, 0, 0);
         snake = new Snake();
+
+
         initView();
     }
 
@@ -43,20 +49,19 @@ public class MainScreen extends GridPane {
         setVgap(10);
         setGridLinesVisible(false);
 
-        button.setOnAction(e -> {
-            long lastTime = System.nanoTime();
-            final double NS = 1000000000.0 / 60;
-            double delta = 0.0;
-            while (snake.isAlive()) {
-                long now = System.nanoTime();
-                delta += (now - lastTime) / NS;
-                lastTime = now;
-                while (delta >= 1) {
-                    render(snake);
-                    delta--;
-                }
+        button.setOnAction(e -> timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    if (snake.isAlive())
+                        render(snake);
+                    else
+                        cancel();
+                });
+
             }
-        });
+
+        }, 0L, 100L));
 
 
         setOnKeyPressed(e -> {
